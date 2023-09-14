@@ -19,6 +19,37 @@ switch ($_GET["op"]) {
 	case 'registrar':
 		$rspta=$prospecto->registrar($nombre,$telefono,$correo,$interes,$grado,$escuela);
 		//$movimiento = 0;
+
+
+        //pruebas
+
+                
+        // Datos a escribir en la hoja de cálculo
+        $datos = [
+            ['DESDE APPCONTACTAME', 'PENDIENTE', $interes, $nombre, $telefono, $correo, $grado, $escuela]
+        ];
+
+        // URL de ejecución de Apps Script
+        $url = 'https://script.google.com/macros/s/AKfycbyBVk8Ii4eyq1Anakwtpf9qt1kZPIJzYGQvWHmEUdkCim6LfTYo2sOyYAZPLpUDgOWT/exec';
+
+        // Realiza la solicitud HTTP POST a Apps Script
+        $content = [
+            'datos' => $datos
+        ];
+
+        $options = [
+            'http' => [
+                'header'  => 'Content-type: application/json',
+                'method'  => 'POST',
+                'content' => json_encode($content),
+            ],
+        ];
+        $context  = stream_context_create($options);
+        $response = file_get_contents($url, false, $context);
+        
+
+
+        //pruebas
 		if ($rspta) {
 			$rspta2 = $prospecto->lastId();
 		}
